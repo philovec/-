@@ -1,0 +1,50 @@
+body { font-family: sans-serif; padding: 20px; background-color: #fafafa; }
+        
+/* カードのスタイル */
+.date-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 3px 10px 10px ;
+    margin-bottom: 0px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+        
+h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.1em; }
+
+/* ボタン群のスタイル */
+.buttons { display: flex; gap: 5px; }
+        
+.status-btn {
+    flex: 1; /* 均等な幅にする */
+    padding: 12px 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* 選択されたボタンの色 */
+.status-btn.selected { background: #e6f4ea; border-color: #1e7e34; color: #1e7e34; font-weight: bold; }
+/* 不参加（×）が選ばれた時の色 */
+.status-btn.selected[data-type="absent"] { background: #fbe9e7; border-color: #c62828; color: #c62828; }
+
+/* 詳細エリア（スライダー）のスタイル */
+.detail-area {
+    display: none; /* 最初は隠す */
+    margin-top: 15px;
+    padding: 0px 20px 20px 20px; /* スライダーのために下を少し空ける */
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+        
+/* classがついたら表示 */
+.active-partial .detail-area { display: block; }
+        
+/* スライダー自体のカスタマイズ（少し太くして押しやすく） */
+.noUi-connect { background: #1e7e34; } /* 選択範囲の色 */
+.noUi-handle { cursor: grab; }
+        
+/* 時間表示の文字 */
+.time-display { font-weight: bold; color: #333; font-size: 1.1em; }
