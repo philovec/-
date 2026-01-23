@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>会議日調ツール</title>
+
+        <link href="../css/user-form.css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <a href="../html/menu.html">メニューに戻る</a>
+        </header>
+        <h1>会議日調</h1>
+
+        <h2>回答モード</h2>
+
+        <main>
+            <label id="name-user-label">
+                氏名：
+                <input id="name-user" type="text" list="name-user-list"/>
+                <datalist id="name-user-list"></datalist>
+            </label>
+            
+            <button id="form-update">現時点での回答を表示</button>
+            
+            <form>
+                <h3>凡例</h3>
+                <p>可能：p</p>
+                <p>不可能：u</p>
+                <p>不可能ではないが嬉しくない：m</p>
+                <template></template>
+                <button id="submit">回答を送信</button>
+            </form>
+        </main>
+
+        <p>回答を送信しました。</p>
+        
+        <script src="../js/user-form.js"></script>
+    </body>
+</html>

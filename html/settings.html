@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>会議日調ツール</title>
+
+        <link href="../css/settings.css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <a href="../html/menu.html">メニューに戻る</a>
+        </header>
+        <h1>会議日調</h1>
+
+        <h2>設定モード</h2>
+
+        <fieldset>
+            <legend>日調対象会議</legend>
+            <select id="target-mtg">
+                <template></template>
+            </select>
+            <a>対象会議の日調リンク</a>
+        </fieldset>
+        <fieldset>
+            <legend>デフォルトの日調対象者：</legend>
+            <table>
+                <tr><th>名前</th></tr>
+                <template></template>
+            </table>
+            <input id="target-name" type="text">
+            <button id="target-name-add">追加</button>
+        </fieldset>
+
+        <script src="../js/settings.js"></script>
+    </body>
+</html>
