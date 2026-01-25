@@ -17,19 +17,86 @@
 
         <fieldset>
             <legend>日調対象会議</legend>
-            <select id="target-mtg">
+            <select class="target-mtg">
                 <template></template>
             </select>
-            <a>対象会議の日調リンク</a>
+            <div>
+                <input type="number" placeholder="対象月" id="month-create">
+                <select id="str-create">
+                    <option>前</option>
+                    <option>後</option>
+                </select>
+                <button id="btn-create">新規作成</button>
+            </div>
+            <div>
+                <select class="target-mtg" id="target-delete">
+                    <option>テスト用2</option>
+                    <option>テンプレ</option>
+                    <template></template>
+                </select>
+                <button id="btn-delete">削除</button>
+            </div>
         </fieldset>
+
         <fieldset>
-            <legend>デフォルトの日調対象者：</legend>
-            <table>
-                <tr><th>名前</th></tr>
-                <template></template>
+            <legend>各種設定</legend>
+
+            <div class="startTime-form">
+                <label for="startTime-input">日調開始時刻（時）</label>
+                <input id="startTime-input" type="number">
+            </div>
+
+            <div class="endTime-form">
+                <label for="endTime-input">日調終了時刻（時）</label>
+                <input id="endTime-input" type="number">
+            </div>
+
+            <div class="stepTime-form">
+                <label for="stepTime-input">日調の時刻間隔（時）</label>
+                <input id="stepTime-input" type="number">
+            </div>
+            <div class="member-table-form"></div>
+            <h3 for="member-table">デフォルトの日調対象者</h3>
+            <p>表を変更しても、保存ボタンを押さなければ確定しないので注意してください。</p>
+            
+            <table id="member-table">
+                <thead>
+                    <tr>
+                        <th>選出枠</th>                        
+                        <th>名前</th>
+                        <th>必須</th>
+                        <th>削除</th>
+                    </tr>
+                </thead>
+                <tbody id="member-table-body"></tbody>
             </table>
-            <input id="target-name" type="text">
-            <button id="target-name-add">追加</button>
+
+            <template id="member-row-template">
+                <tr class ='member-row'>
+                    <td>
+                        <select class="select-origin">
+                            <option value="自治会">自治会</option>
+                            <option value="学友会">学友会</option>
+                            <option value="生協">生協</option>
+                            <option value="なし">なし</option>                           
+                        </select>
+                    </td>
+                    <td><input type="text" class="input-name"></td>
+                    <td>
+                        <select class="select-need">
+                            <option value="gkc">gkc</option>
+                            <option value="gkuc">gkuc</option>
+                            <option value="両方">両方</option>
+                            <option value="なし">なし</option>
+                        </select>
+                    </td>
+                    <td><button class="btn-delete-member">削除</button></td>
+                </tr>
+            </template>
+                        
+            <button id="btn-add-member">追加</button>
+
+            <button id="btn-save">設定を保存</button>
         </fieldset>
 
         <script src="../js/settings.js"></script>

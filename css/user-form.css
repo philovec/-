@@ -1,50 +1,48 @@
-body { font-family: sans-serif; padding: 20px; background-color: #fafafa; }
-        
-/* カードのスタイル */
-.date-card {
-    background: white;
+/* 行全体 */
+.date-row {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+/* タイムラインのコンテナ */
+.time-blocks-wrapper {
+    position: relative;
+    margin-top: 5px;
+    overflow-x: auto; /* スマホで画面からはみ出てもスクロールできる */
+}
+
+/* 時間ブロックを横並びにする */
+.time-blocks {
+    display: flex;
+    gap: 0; /* 隙間をなくしてバーに見せる */
+}
+
+/* 個別の30分ブロック */
+.time-block {
+    width: 30px;      /* 幅は指で押しやすいサイズに */
+    height: 40px;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 3px 10px 10px ;
-    margin-bottom: 0px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-        
-h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.1em; }
-
-/* ボタン群のスタイル */
-.buttons { display: flex; gap: 5px; }
-        
-.status-btn {
-    flex: 1; /* 均等な幅にする */
-    padding: 12px 5px;
+    background-color: #eee; /* デフォルト（無回答） */
     cursor: pointer;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 4px;
-    font-size: 0.9em;
+    flex-shrink: 0;   /* 潰れないようにする */
 }
 
-/* 選択されたボタンの色 */
-.status-btn.selected { background: #e6f4ea; border-color: #1e7e34; color: #1e7e34; font-weight: bold; }
-/* 不参加（×）が選ばれた時の色 */
-.status-btn.selected[data-type="absent"] { background: #fbe9e7; border-color: #c62828; color: #c62828; }
+/* 状態ごとの色（凡例に対応） */
+.time-block.status-ok { background-color: #4CAF50; } /* 緑 */
+.time-block.status-maybe { background-color: #FFEB3B; } /* 黄 */
+.time-block.status-ng { background-color: #F44336; } /* 赤 */
 
-/* 詳細エリア（スライダー）のスタイル */
-.detail-area {
-    display: none; /* 最初は隠す */
-    margin-top: 15px;
-    padding: 0px 20px 20px 20px; /* スライダーのために下を少し空ける */
-    background: #f8f9fa;
-    border-radius: 8px;
+/* 時間メモリの数字 */
+.time-ruler {
+    display: flex;
+    height: 20px;
+    font-size: 10px;
+    color: #666;
+    position: relative;
+    margin-bottom: 2px;
 }
-        
-/* classがついたら表示 */
-.active-partial .detail-area { display: block; }
-        
-/* スライダー自体のカスタマイズ（少し太くして押しやすく） */
-.noUi-connect { background: #1e7e34; } /* 選択範囲の色 */
-.noUi-handle { cursor: grab; }
-        
-/* 時間表示の文字 */
-.time-display { font-weight: bold; color: #333; font-size: 1.1em; }
+.ruler-label {
+    position: absolute;
+    transform: translateX(-50%); /* 数字の中央揃え */
+}
