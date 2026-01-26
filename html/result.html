@@ -17,42 +17,67 @@
 
         <details>
             <summary>個別回答</summary>
-            <input id="name-search" type="text">
-            <table id="each-table">
+            <select id="name-search"></select>
+            <button id ="btn-name-search">検索</button>
+            <table>
                 <thead>
                     <tr>
                         <th>日付</th>
                         <th>結果</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="each-table-body"></tbody>
             </table>
         </details>
 
         <details>
             <summary>gkc</summary>
-            <table id="gkc-table">
+            <table>
                 <thead>
                     <tr>
                         <th>日付</th>
                         <th>結果</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="gkc-table-body"></tbody>
             </table>
+            <details>
+                <summary>数値集計</summary>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>結果</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gkc-number-table-body"></tbody>
+                </table>
+            </details>
         </details>
 
         <details>
             <summary>gkuc</summary>
-            <table id="gkuc-table">
+            <table>
                 <thead>
                     <tr>
                         <th>日付</th>
                         <th>結果</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="gkuc-table-body"></tbody>
             </table>
+            <details>
+                <summary>数値集計</summary>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>結果</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gkuc-number-table-body"></tbody>
+                </table>
+            </details>
         </details>
         
         
@@ -60,8 +85,12 @@
         <template id="result-template">
             <tr>
                 <td class="date"></td>
-                <td class="time-ruler"></td>
-                <td class="time-blocks"></td>
+                <td class="timeline-cell">
+                    <div class="timeline-container">
+                        <div class="result-bars"></div>
+                        <div class="result-comment"></div>
+                    </div>
+                </td>
             </tr>
         </template>
 

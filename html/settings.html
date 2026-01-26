@@ -8,10 +8,6 @@
         <link href="../css/settings.css" rel="stylesheet">
     </head>
     <body>
-        <div id="loading-screen">
-            <p>Loading...</p>
-        </div>
-        
         <header>
             <a href="../html/menu.html">メニューに戻る</a>
         </header>
@@ -20,8 +16,7 @@
         <h2>設定モード</h2>
 
         <fieldset>
-            <legend>日調対象会議</legend>
-            <select class="target-mtg"></select>
+            <legend>日調の新規作成・削除</legend>
             <div>
                 <input type="number" placeholder="対象月" id="month-create">
                 <select id="str-create">
@@ -38,6 +33,10 @@
 
         <fieldset>
             <legend>各種設定</legend>
+            <div class="target-mtg-form">
+                <label for="target-mtg-select">表示する日調</label>
+                <select id="target-mtg-select" class="target-mtg"></select>
+            </div>
 
             <div class="startTime-form">
                 <label for="startTime-input">日調開始時刻（時）</label>

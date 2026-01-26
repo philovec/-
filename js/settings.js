@@ -23,36 +23,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
 })
 async function loadSettings() {
     try{
-        const action = "loadSettings"
-        const dataObj = {action:action}
-        const result = await postGAS(dataObj)
-
-        if (result && result.status === "success"){
-        } else if (result && result.status === "error"){
-            alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
-            return
-        } else {
-            console.log(result)
-            alert('GAS側で不明なエラーが発生しました。')
-            return
+        const result = {
+            targetMtg: sessionStorage.getItem('targetMtg'),
+            startTime: sessionStorage.getItem('startTime'),
+            endTime: sessionStorage.getItem('endTime'),
+            stepTime: sessionStorage.getItem('stepTime'),
+            targetSSList: sessionStorage.getItem('targetSSList'),
+            attendees: sessionStorage.getItem('attendees')
         }
+        Object.keys(result).forEach(key => {
+            result[key] = JSON.parse(result[key])
+        })
 
         //日調リスト作成
         const targetMtgElements = document.getElementsByClassName('target-mtg')
         for (const element of targetMtgElements){
-            for (const targetMtg of result.targetSSList){
+            for (const target of result.targetSSList){
                 const optionElement = document.createElement('option')
-                optionElement.textContent = targetMtg
+                optionElement.textContent = target
+                optionElement.value = target
                 element.appendChild(optionElement)
             }
         }
 
         //各種設定欄デフォルト設定
+        const targetMtgElement = document.getElementById('target-mtg-select')
         const startTimeElement = document.getElementById('startTime-input')
         const endTimeElement = document.getElementById('endTime-input')
         const stepTimeElement = document.getElementById('stepTime-input')
         const tbody = document.getElementById('member-table-body')
 
+        targetMtgElement.value = result.targetMtg
         startTimeElement.value = result.startTime
         endTimeElement.value = result.endTime
         stepTimeElement.value = result.stepTime
@@ -79,9 +80,6 @@ async function loadSettings() {
         }        
     } catch(e){
         alertError(e)
-    } finally{
-        const loader = document.getElementById('loading-screen');
-        loader.classList.add('loaded');
     }
 }
 async function saveSettings(saveBtn) {
@@ -90,6 +88,7 @@ async function saveSettings(saveBtn) {
         document.body.style.cursor = 'wait';
         const action = "saveSettings"
 
+        const targetMtg = document.getElementById('target-mtg-select').value
         const startTimeStr = document.getElementById('startTime-input').value
         const endTimeStr = document.getElementById('endTime-input').value
         const stepTimeStr = document.getElementById('stepTime-input').value
@@ -103,7 +102,7 @@ async function saveSettings(saveBtn) {
         const endTime = Number(endTimeStr)
         const stepTime = Number(stepTimeStr)
 
-        if (!timeCheck(startTime) || !timeCheck(endTime) || startTime >= endTime || !stepTimeCheck(startTime, endTime, stepTime)){
+        if (!timeCheck(startTime) || !timeCheck(endTime) || startTime > endTime || !stepTimeCheck(startTime, endTime, stepTime)){
             alert('時間の記入欄が不正です。')
             return
         }
@@ -126,6 +125,7 @@ async function saveSettings(saveBtn) {
 
         const dataObj = {
             action:action,
+            targetMtg:targetMtg,
             startTime:startTime,
             endTime:endTime,
             stepTime:stepTime,
@@ -134,8 +134,8 @@ async function saveSettings(saveBtn) {
         const result = await postGAS(dataObj)
 
         if (result && result.status === "success"){
-            alert(`設定変更が完了しました。`)
-            location.reload()
+            alert(`設定変更が完了しました。メニューに移動します。`)
+            location.href = '../html/menu.html'
         } else if (result && result.status === "error"){
             alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
             return
@@ -160,7 +160,7 @@ function stepTimeCheck(startTime, endTime, stepTime){
     if (typeof stepTime !== 'number'){
         return false
     }
-    const duration = endTime - startTime
+    const duration = endTime + 1 - startTime
     const count = duration / stepTime
     if (Math.abs(count - Math.round(count)) > 0.0001){
         return false
@@ -225,8 +225,8 @@ async function deleteSheet(deleteBtn){
         const result = await postGAS(dataObj)
 
         if (result && result.status === "success"){
-            alert(`${target}の削除が完了しました。`)
-            location.reload()
+            alert(`${target}の削除が完了しました。メニューに移動します。`)
+            location.href = 'menu.html'
         } else if (result && result.status === "error"){
             alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
             return
@@ -262,8 +262,8 @@ async function createSheet(createBtn){
         const result = await postGAS(dataObj)
 
         if (result && result.status === "success" && result.SlackMsg){
-            confirm(`${month}月${str}半の会議日調の作成が完了しました。\nSlack文面：\n${result.SlackMsg}`)
-            location.reload()
+            alert(`${month}月${str}半の会議日調の作成が完了しました。一度メニューに戻ります。\nSlack文面：\n${result.SlackMsg}`)
+            location.href = 'menu.html'
         } else if (result && result.status === "error"){
             alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
             return
