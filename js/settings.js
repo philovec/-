@@ -18,8 +18,72 @@ document.addEventListener('DOMContentLoaded', ()=>{
             deleteMember(deleteMemBtn)
         }
     })
-})
 
+    loadSettings()
+})
+async function loadSettings() {
+    try{
+        const action = "loadSettings"
+        const dataObj = {action:action}
+        const result = await postGAS(dataObj)
+
+        if (result && result.status === "success"){
+        } else if (result && result.status === "error"){
+            alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
+            return
+        } else {
+            console.log(result)
+            alert('GAS側で不明なエラーが発生しました。')
+            return
+        }
+
+        //日調リスト作成
+        const targetMtgElements = document.getElementsByClassName('target-mtg')
+        for (const element of targetMtgElements){
+            for (const targetMtg of result.targetSSList){
+                const optionElement = document.createElement('option')
+                optionElement.textContent = targetMtg
+                element.appendChild(optionElement)
+            }
+        }
+
+        //各種設定欄デフォルト設定
+        const startTimeElement = document.getElementById('startTime-input')
+        const endTimeElement = document.getElementById('endTime-input')
+        const stepTimeElement = document.getElementById('stepTime-input')
+        const tbody = document.getElementById('member-table-body')
+
+        startTimeElement.value = result.startTime
+        endTimeElement.value = result.endTime
+        stepTimeElement.value = result.stepTime
+
+        const attendees = result.attendees
+        for (const person of attendees){
+            const template = document.getElementById('member-row-template')
+            const newTr = template.content.cloneNode(true).firstElementChild
+
+            const origin = newTr.querySelector('.select-origin')
+            const name = newTr.querySelector('.input-name')
+            const need = newTr.querySelector('.select-need')
+
+            origin.value = person.origin
+            name.value = person.name
+            if (person.need.includes('gkc') && person.need.includes('gkuc')){
+                need.value = '両方'
+            }
+            if (!person.need){
+                need.value = 'なし'
+            }
+            
+            tbody.appendChild(newTr)
+        }        
+    } catch(e){
+        alertError(e)
+    } finally{
+        const loader = document.getElementById('loading-screen');
+        loader.classList.add('loaded');
+    }
+}
 async function saveSettings(saveBtn) {
     try{
         if(saveBtn) saveBtn.disabled = true;
@@ -120,12 +184,6 @@ function deleteMember(deleteMemBtn) {
 
     const memberRow = deleteMemBtn.closest('tr')
 
-    const name = memberRow.querySelector('.input-name').value
-    const confirmResult = confirm(`本当に${name}をリストから削除しますか？`)
-    if (!confirmResult) {
-        deleteMemBtn.disabled = false;
-        return;
-    }
     memberRow.remove()
 }
 

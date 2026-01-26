@@ -13,31 +13,57 @@
         </header>
 
         <h1>会議日調</h1>
-
         <h2>集計モード</h2>
 
         <details>
+            <summary>個別回答</summary>
+            <input id="name-search" type="text">
+            <table id="each-table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>結果</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </details>
+
+        <details>
             <summary>gkc</summary>
-            <table>
-                <template></template>
+            <table id="gkc-table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>結果</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </details>
 
         <details>
             <summary>gkuc</summary>
-            <table>
-                <template></template>
+            <table id="gkuc-table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>結果</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </details>
         
-        <details>
-            <summary>個別回答</summary>
-            <input id="comment-search" type="text">
-            <select>
-                <template></template>
-            </select>
-            <template></template>
-        </details>
+        
+
+        <template id="result-template">
+            <tr>
+                <td class="date"></td>
+                <td class="time-ruler"></td>
+                <td class="time-blocks"></td>
+            </tr>
+        </template>
 
         <script src="../js/result.js"></script>
     </body>

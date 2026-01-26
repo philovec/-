@@ -8,6 +8,10 @@
         <link href="../css/settings.css" rel="stylesheet">
     </head>
     <body>
+        <div id="loading-screen">
+            <p>Loading...</p>
+        </div>
+        
         <header>
             <a href="../html/menu.html">メニューに戻る</a>
         </header>
@@ -17,9 +21,7 @@
 
         <fieldset>
             <legend>日調対象会議</legend>
-            <select class="target-mtg">
-                <template></template>
-            </select>
+            <select class="target-mtg"></select>
             <div>
                 <input type="number" placeholder="対象月" id="month-create">
                 <select id="str-create">
@@ -29,11 +31,7 @@
                 <button id="btn-create">新規作成</button>
             </div>
             <div>
-                <select class="target-mtg" id="target-delete">
-                    <option>テスト用2</option>
-                    <option>テンプレ</option>
-                    <template></template>
-                </select>
+                <select class="target-mtg" id="target-delete"></select>
                 <button id="btn-delete">削除</button>
             </div>
         </fieldset>

@@ -25,11 +25,15 @@
             <button id="form-update">現時点での回答を表示</button>
             
             <form id="form">
-                <h3>凡例</h3>
-                <p>可能：緑</p>
-                <p>不可能：赤</p>
-                <p>不可能ではないが嬉しくない：黄</p>
-                <template id="form-main">
+                <hgroup>
+                    <h3>凡例</h3>
+                    <p>可能：緑</p>
+                    <p>不可能：赤</p>
+                    <p>不可能ではないが嬉しくない：黄</p>
+                </hgroup>
+                <div id="form-main"></div>
+
+                <template id="form-row-template">
                     <div class="date-row">
                         <div class="date-label">
                             <span class="date-text">日付</span>
@@ -47,6 +51,7 @@
                         </div>
                     </div>
                 </template>
+                
                 <button id="submit">回答を送信</button>
             </form>
         </main>
