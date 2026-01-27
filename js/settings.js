@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', async()=>{
     const deleteBtn = document.getElementById('btn-delete')
     deleteBtn.addEventListener('click', ()=>deleteSheet(deleteBtn))
 
@@ -19,7 +19,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
         }
     })
 
-    loadSettings()
+    const isVisited = sessionStorage.getItem('isVisited')
+    if(!isVisited || JSON.parse(isVisited) !== true){
+        await load()
+    }
+
+    await loadSettings()
+    
+    //ローディング画面の削除
+    const loader = document.getElementById('loading-screen');
+    loader.classList.add('loaded');
 })
 async function loadSettings() {
     try{
@@ -82,10 +91,10 @@ async function loadSettings() {
         alertError(e)
     }
 }
+
 async function saveSettings(saveBtn) {
     try{
-        if(saveBtn) saveBtn.disabled = true;
-        document.body.style.cursor = 'wait';
+        disable()
         const action = "saveSettings"
 
         const targetMtg = document.getElementById('target-mtg-select').value
@@ -133,23 +142,15 @@ async function saveSettings(saveBtn) {
         }
         const result = await postGAS(dataObj)
 
-        if (result && result.status === "success"){
-            alert(`設定変更が完了しました。メニューに移動します。`)
-            location.href = '../html/menu.html'
-        } else if (result && result.status === "error"){
-            alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
-            return
-        } else {
-            alert('GAS側で不明なエラーが発生しました。')
-            return
-        }
+        alert(`設定変更が完了しました。リロードします。`)
+        await load()
     } catch(e){
         alertError(e)
     } finally{
-        if(saveBtn) saveBtn.disabled = false;
-        document.body.style.cursor = 'default';
+        enable()
     }
 }
+
 function timeCheck(time){
     if (typeof time !== 'number' || isNaN(time) || time > 24 || time < 0){
         return false
@@ -180,15 +181,16 @@ function memberRowsCheck(memberRows){
 }
 
 function deleteMember(deleteMemBtn) {
-    if(deleteMemBtn) deleteMemBtn.disabled = true;
+    disable()
 
     const memberRow = deleteMemBtn.closest('tr')
 
     memberRow.remove()
+    enable()
 }
 
 function addMember(addMemBtn){
-    if(addMemBtn) addMemBtn.disabled = true;
+    disable()
 
     const tbody = document.getElementById('member-table-body')
     const template = document.getElementById('member-row-template')
@@ -200,13 +202,12 @@ function addMember(addMemBtn){
 
     tbody.appendChild(newTr)
 
-    addMemBtn.disabled = false;
+    enable()
 }
 
 async function deleteSheet(deleteBtn){
     try{
-        if(deleteBtn) deleteBtn.disabled = true;
-        document.body.style.cursor = 'wait';
+        disable()
 
         const action = "delete"
         const target = document.getElementById('target-delete').value
@@ -224,28 +225,18 @@ async function deleteSheet(deleteBtn){
         const dataObj = {action:action, target:target}
         const result = await postGAS(dataObj)
 
-        if (result && result.status === "success"){
-            alert(`${target}の削除が完了しました。メニューに移動します。`)
-            location.href = 'menu.html'
-        } else if (result && result.status === "error"){
-            alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
-            return
-        } else {
-            alert('GAS側で不明なエラーが発生しました。')
-            return
-        }
+        alert('スプレッドシートの削除が完了しました。リロードします。')
+        await load()
     } catch(e){
         alertError(e)
     } finally{
-        if(deleteBtn) deleteBtn.disabled = false;
-        document.body.style.cursor = 'default';
+        enable()
     }
 }
 
 async function createSheet(createBtn){
     try{
-        if(createBtn) createBtn.disabled = true;
-        document.body.style.cursor = 'wait';
+        disable()
 
         const action = "create"
         const month = document.getElementById('month-create').value
@@ -261,40 +252,11 @@ async function createSheet(createBtn){
         const dataObj = {action:action, month:month, str:str}
         const result = await postGAS(dataObj)
 
-        if (result && result.status === "success" && result.SlackMsg){
-            alert(`${month}月${str}半の会議日調の作成が完了しました。一度メニューに戻ります。\nSlack文面：\n${result.SlackMsg}`)
-            location.href = 'menu.html'
-        } else if (result && result.status === "error"){
-            alert(`GAS側のエラーが発生しました：${result.errorMsg}`)
-            return
-        } else {
-            alert('GAS側で不明なエラーが発生しました。')
-            return
-        }
+        alert(`${month}月${str}半の会議日調の作成が完了しました。リロードします。\nSlack文面：\n${result.SlackMsg}`)
+        await load()
     } catch(e){
         alertError(e)
     } finally{
-        if(createBtn) createBtn.disabled = false;
-        document.body.style.cursor = 'default';
+        enable()
     }
-}
-
-async function postGAS(dataObj){
-    const url = 'https://script.google.com/macros/s/AKfycbw3El_rzMysep877arihZY08kKxvz65ak5yMFyJaT5j6M5CI8bfKtGSuTI0_oGB24tv/exec'
-    const options = {
-        method: "POST",
-        body: JSON.stringify(dataObj),
-        mode: "cors",
-        headers: {"Content-Type": "text/plain"}
-    }
-
-    const request = await fetch(url,options)
-    const result = await request.json()
-
-    return result;
-}
-
-function alertError(e){
-    alert(`JavaScriptエラーが発生しました：${e}`)
-    console.error(e)
 }

@@ -1,0 +1,248 @@
+/* =========================================
+   基本レイアウト・フォーム周り
+   ========================================= */
+main {
+  width: 95%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding-bottom: 50px; /* 送信ボタン用スペース */
+}
+
+/* 名前入力欄のレイアウト */
+#name-user-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#name-user,
+#extra-name-user {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px; /* スマホでのズーム防止 */
+}
+
+#extra-name-user:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+#form-display {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* 凡例 */
+hgroup {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+hgroup p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+/* 凡例のカラーマーカー */
+hgroup p::before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+}
+hgroup p:nth-child(2)::before { background-color: #d4edda; border-color: #c3e6cb; } /* 緑 */
+hgroup p:nth-child(3)::before { background-color: #f8d7da; border-color: #f5c6cb; } /* 赤 */
+hgroup p:nth-child(4)::before { background-color: #fff3cd; border-color: #ffeeba; } /* 黄 */
+
+/* =========================================
+   テーブル・タイムライン UI
+   ========================================= */
+table {
+  width: 100%;
+  border-collapse: separate; /* stickyのためにseparate推奨 */
+  border-spacing: 0;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 0; /* セル内のdivでpadding調整するため0 */
+  vertical-align: middle;
+}
+
+/* --- 固定ヘッダー・固定列の設定 --- */
+thead th {
+  background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* 日付列を左に固定 */
+th:first-child,
+td.date {
+  position: sticky;
+  left: 0;
+  z-index: 5; /* タイムラインより上に表示 */
+  background-color: #fff; /* 透明だと重なるので背景色指定 */
+  border-right: 2px solid #ddd;
+  width: 80px;
+  min-width: 80px;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+}
+
+/* ヘッダーの左上（日付セル）は一番手前 */
+thead th:first-child {
+  z-index: 15;
+}
+
+/* --- タイムライン領域 --- */
+.timeline-cell {
+  overflow-x: auto; /* 横スクロール可能に */
+  padding: 10px 5px;
+  background-color: #fff;
+}
+
+/* タイムライン全体を囲むコンテナ */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content; /* 中身に合わせて幅を確保 */
+}
+
+/* --- 時間軸（定規部分） --- */
+.time-ruler {
+    display: flex;       /* ★これで数字が横並びになります */
+    flex-direction: row;
+    height: 20px;
+    margin-bottom: 2px;
+}
+
+.time-label {
+    /* 下のバーと幅を合わせる */
+    width: 30px;     
+    min-width: 30px;
+    
+    font-size: 10px;
+    color: #666;
+    border-left: 1px solid #ccc; /* メモリ線 */
+    padding-left: 2px;
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+/* タイムラインのセル（共通） */
+.timeline-bars > div {
+    /* 文字（○×）が見えなくてもタップ判定があるようにサイズを確保 */
+    min-width: 30px; 
+    height: 40px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid #eee; /* 薄い枠線 */
+}
+
+/* --- 回答バー部分 --- */
+.timeline-bars {
+    display: flex;      /* バーを横並びにする */
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.timeline-bars > div {
+    /* 上の数字と幅を合わせる */
+    width: 30px;    
+    min-width: 30px;
+    
+    height: 40px;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.timeline-bars > div:last-child {
+  border-right: 1px solid #ccc; /* 最後のセルだけ右線を表示 */
+}
+
+/* --- ステータスごとの色定義 --- */
+/* 可能（緑） */
+.timeline-bars > div.status-ok {
+  background-color: #d4edda;
+  color: #155724;
+}
+/* 不可能（赤） */
+.timeline-bars > div.status-ng {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+/* 微妙（黄） */
+.timeline-bars > div.status-maybe {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* --- コメント欄 --- */
+.timeline-comment {
+  width: 100%;
+  min-width: 200px;
+}
+.comment-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* --- 送信ボタン --- */
+#submit {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+#submit:hover {
+  background-color: #218838;
+}
+#submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* スマホ対応（幅を広げる場合） */
+@media (max-width: 600px) {
+    .time-label,
+    .timeline-bars > div {
+        width: 35px;      /* 両方セットで変更する */
+        min-width: 35px;
+    }
+    td.date{
+        width: 40px;
+    }
+}

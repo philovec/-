@@ -6,14 +6,21 @@
         <title>会議日調ツール</title>
 
         <link href="../css/result.css" rel="stylesheet">
+        <link href="../css/common.css" rel="stylesheet">
     </head>
     <body>
+        <div id="loading-screen">
+            <p>Loading...</p>
+        </div>
+
         <header>
-            <a href="../html/menu.html">メニューに戻る</a>
+            <a id ="back-to-menu" href="../html/menu.html">メニューに戻る</a>
         </header>
+        
 
         <h1>会議日調</h1>
         <h2>集計モード</h2>
+        <button id="btn-recalculate">集計</button>
 
         <details>
             <summary>個別回答</summary>
@@ -82,18 +89,19 @@
         
         
 
-        <template id="result-template">
+        <template id="timeline-template">
             <tr>
                 <td class="date"></td>
                 <td class="timeline-cell">
                     <div class="timeline-container">
-                        <div class="result-bars"></div>
-                        <div class="result-comment"></div>
+                        <div class="timeline-bars"></div>
+                        <div class="timeline-comment"></div>
                     </div>
                 </td>
             </tr>
         </template>
 
         <script src="../js/result.js"></script>
+        <script src="../js/common.js"></script>
     </body>
 </html>
