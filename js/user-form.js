@@ -64,12 +64,16 @@ async function searchName(){
         const extraNameElement = document.getElementById('extra-name-user')
         const template = document.getElementById('timeline-template')
         const tableBody = document.getElementById('table-body')
+        const targetSheetNameList = JSON.parse(sessionStorage.getItem('targetSheetNameList'))
 
         let name = ''
         if(nameElement.value === 'その他'){
             name = extraNameElement.value
             if(!name){
                 alert('名前を入力してください。')
+                return
+            } else if (targetSheetNameList.includes(name)){
+                alert(`${name}さんのシートは既に作成されています。選択肢から名前を選択してください。`)
                 return
             }
             const response = confirm(`${name}さんのシートを作成しますか？`)
@@ -120,6 +124,10 @@ async function submit() {
         const nameElement = document.getElementById('name-user')
         const timelineElements = document.querySelectorAll('.timeline-bars')
         const name = nameElement.value
+        
+        if(!confirm(`あなたは${name}さんですか？`)){
+            return
+        }
         const personalData = []
 
         for (let i = 0; i < dates.length; i++){

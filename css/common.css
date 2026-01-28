@@ -86,3 +86,87 @@ h3 {
     padding-bottom: 5px;
     margin-top: 0;
 }
+
+
+
+
+/* =========================================
+   共通テーブルスタイル (common.cssに追加)
+   ========================================= */
+
+/* テーブル全体 */
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+/* セル共通 */
+.common-table th, 
+.common-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* ヘッダー */
+.common-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+/* テーブル内の入力欄をセルいっぱいに広げる */
+.common-table td input, 
+.common-table td select {
+    width: 100%;
+    border: 1px solid #eee; /* 薄い枠線 */
+    padding: 6px;
+    box-sizing: border-box; /* 枠線を含めた幅計算 */
+}
+
+.common-table td input:focus, 
+.common-table td select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* --- 汎用ボタン (削除ボタンなどで使用) --- */
+button, .btn {
+    cursor: pointer;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+button:hover, .btn:hover {
+    opacity: 0.9;
+}
+
+.btn-danger, .btn-delete, .btn-delete-member {
+    background-color: #dc3545; /* 赤 */
+    color: white;
+}
+
+/* --- レスポンシブ対応 (スマホ) --- */
+@media (max-width: 600px) {
+    /* テーブルを横スクロールさせる（崩れ防止） */
+    .member-table-wrapper {
+        /* fieldsetのpaddingに依存せず、親要素側で制御する場合用 */
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+    }
+    
+    /* もしHTML構造を変えずにテーブル自体にスクロールを持たせる場合 */
+    .member-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

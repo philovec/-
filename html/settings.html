@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>会議日調ツール</title>
 
-        <link href="../css/settings.css" rel="stylesheet">
         <link href="../css/common.css" rel="stylesheet">
+        <link href="../css/settings.css" rel="stylesheet">
     </head>
     <body>
         <div id="loading-screen">
@@ -14,91 +14,99 @@
         </div>
         <header>
             <a id="back-to-menu" href="../html/menu.html">メニューに戻る</a>
+            <button id="data-renew">データ更新</button>
         </header>
         <h1>会議日調</h1>
 
         <h2>設定モード</h2>
 
-        <fieldset>
-            <legend>日調の新規作成・削除</legend>
-            <div>
-                <input type="number" placeholder="対象月" id="month-create">
-                <select id="str-create">
-                    <option>前</option>
-                    <option>後</option>
-                </select>
-                <button id="btn-create">新規作成</button>
-            </div>
-            <div>
-                <select class="target-mtg" id="target-delete"></select>
-                <button id="btn-delete">削除</button>
-            </div>
-        </fieldset>
+        <main class="main-container">
 
-        <fieldset>
-            <legend>各種設定</legend>
-            <div class="target-mtg-form">
-                <label for="target-mtg-select">表示する日調</label>
-                <select id="target-mtg-select" class="target-mtg"></select>
-            </div>
+            <fieldset>
+                <legend>日調の新規作成・削除</legend>
+                <div class="control-row">
+                    <input type="number" placeholder="対象月" id="month-create" class="=form-control short">
+                    <select id="str-create" class="form-control short">
+                        <option>前</option>
+                        <option>後</option>
+                    </select>
+                    <button id="btn-create" class="btn btn-primary">新規作成</button>
+                </div>
+                <div>
+                    <select class="target-mtg form-control" id="target-delete"></select>
+                    <button id="btn-delete" class="btn btn-danger">削除</button>
+                </div>
+            </fieldset>
 
-            <div class="startTime-form">
-                <label for="startTime-input">日調開始時刻（時）</label>
-                <input id="startTime-input" type="number">
-            </div>
+            <fieldset>
+                <legend>各種設定</legend>
+                <div class="form-group target-mtg-form">
+                    <label for="target-mtg-select">表示する日調</label>
+                    <select id="target-mtg-select" class="target-mtg form-control"></select>
+                </div>
 
-            <div class="endTime-form">
-                <label for="endTime-input">日調終了時刻（時）</label>
-                <input id="endTime-input" type="number">
-            </div>
+                <div class="startTime-form">
+                    <label for="startTime-input">デフォルトの日調開始時刻（時）</label>
+                    <input id="startTime-input" type="number" class="form-control">
+                </div>
 
-            <div class="stepTime-form">
-                <label for="stepTime-input">日調の時刻間隔（時）</label>
-                <input id="stepTime-input" type="number">
-            </div>
-            <div class="member-table-form"></div>
-            <h3 for="member-table">デフォルトの日調対象者</h3>
-            <p>表を変更しても、保存ボタンを押さなければ確定しないので注意してください。</p>
-            
-            <table id="member-table">
-                <thead>
-                    <tr>
-                        <th>選出枠</th>                        
-                        <th>名前</th>
-                        <th>必須</th>
-                        <th>削除</th>
-                    </tr>
-                </thead>
-                <tbody id="member-table-body"></tbody>
-            </table>
+                <div class="endTime-form">
+                    <label for="endTime-input">デフォルトの日調終了時刻（時）</label>
+                    <input id="endTime-input" type="number">
+                </div>
 
-            <template id="member-row-template">
-                <tr class ='member-row'>
-                    <td>
-                        <select class="select-origin">
-                            <option value="自治会">自治会</option>
-                            <option value="学友会">学友会</option>
-                            <option value="生協">生協</option>
-                            <option value="なし">なし</option>                           
-                        </select>
-                    </td>
-                    <td><input type="text" class="input-name"></td>
-                    <td>
-                        <select class="select-need">
-                            <option value="gkc">gkc</option>
-                            <option value="gkuc">gkuc</option>
-                            <option value="両方">両方</option>
-                            <option value="なし">なし</option>
-                        </select>
-                    </td>
-                    <td><button class="btn-delete-member">削除</button></td>
-                </tr>
-            </template>
-                        
-            <button id="btn-add-member">追加</button>
+                <div class="stepTime-form">
+                    <label for="stepTime-input">デフォルトの日調の時刻間隔（時）(当分は固定)</label>
+                    <input id="stepTime-input" type="number" disabled>
+                </div>
+                <div class="common-table-form"></div>
+                <h3 for="member-table">デフォルトの日調対象者</h3>
+                <p class="note">表を変更しても、保存ボタンを押さなければ確定しないので注意してください。</p>
+                
+                <table id="member-table" class="common-table">
+                    <thead>
+                        <tr>
+                            <th>選出枠</th>                        
+                            <th>名前</th>
+                            <th>必須</th>
+                            <th>削除</th>
+                        </tr>
+                    </thead>
+                    <tbody id="member-table-body"></tbody>
+                </table>
+                
+                <div class="button-area">
+                    <button id="btn-add-member" class="btn btn-secondary">+ 追加</button>
+                </div>
+                <div class="save-area">
+                    <button id="btn-save" class="btn btn-primary btn-large">設定を保存</button>
+                </div>
+            </fieldset>
 
-            <button id="btn-save">設定を保存</button>
-        </fieldset>
+        </main>
+        
+        <template id="member-row-template">
+            <tr class ='member-row'>
+                <td>
+                    <select class="select-origin">
+                        <option value="自治会">自治会</option>
+                        <option value="学友会">学友会</option>
+                        <option value="生協">生協</option>
+                        <option value="なし">なし</option>                           
+                    </select>
+                </td>
+                <td><input type="text" class="input-name"></td>
+                <td>
+                    <select class="select-need">
+                        <option value="gkc">gkc</option>
+                        <option value="gkuc">gkuc</option>
+                        <option value="両方">両方</option>
+                        <option value="なし">なし</option>
+                    </select>
+                </td>
+                <td><button class="btn-delete-member btn btn-danger btn-sm">削除</button></td>
+            </tr>
+        </template>
 
         <script src="../js/settings.js"></script>
         <script src="../js/common.js"></script>

@@ -15,6 +15,7 @@
 
         <header>
             <a id="back-to-menu" href="../html/menu.html">メニューに戻る</a>
+            <button id="data-renew">データ更新</button>
         </header>
         <h1>会議日調</h1>
 
@@ -25,9 +26,10 @@
                 氏名：
                 <select id="name-user"></select>
                 <input id="extra-name-user" type="text" disabled/>
+                リストに氏名がない方は「その他」としてください。
             </label>
             
-            <button id="form-display">検索・追加</button>
+            <button id="form-display">現時点での回答を検索・追加</button>
             
             <form id="form">
                 <hgroup>
@@ -46,25 +48,23 @@
                     </thead>
                     <tbody id="table-body"></tbody>
                 </table>
-
-                <template id="timeline-template">
-                    <tr>
-                        <td class="date"></td>
-                        <td class="timeline-cell">
-                            <div class="timeline-container">
-                                <div class="timeline-bars"></div>
-                                <div class="timeline-comment"></div>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
                 
-                <button id="submit">回答を送信</button>
+                <button id="submit" disabled type="button">回答を送信</button>
             </form>
         </main>
 
-        <p>回答を送信しました。</p>
-        
+        <template id="timeline-template">
+            <tr>
+                <td class="date"></td>
+                <td class="timeline-cell">
+                    <div class="timeline-container">
+                        <div class="timeline-bars"></div>
+                        <div class="timeline-comment"></div>
+                    </div>
+                </td>
+            </tr>
+        </template>
+       
         <script src="../js/user-form.js"></script>
         <script src="../js/common.js"></script>
     </body>

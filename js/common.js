@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', ()=> {
+    const dataRenewBtn = document.getElementById('data-renew')
+    dataRenewBtn.addEventListener('click', ()=>dataRenew())
+})
+
 async function load(){
     try{
         const action = "load"
@@ -11,6 +16,11 @@ async function load(){
     } catch(e){
         alertError(e)
     } 
+}
+
+async function dataRenew() {
+    sessionStorage.setItem('isVisited','false')
+    location.reload()
 }
 
 async function postGAS(dataObj){
@@ -33,6 +43,18 @@ async function postGAS(dataObj){
         console.log(result)
         throw Error('GAS側で不明なエラーが発生しました。')
     }
+}
+
+function memberRowsCheck(memberRows){
+    const memberRowsArray = Array.from(memberRows)
+    const result = memberRowsArray.every((memberRow) => {
+        const nameInput = memberRow.querySelector('.input-name')
+        if (!memberRow || !nameInput.value.trim()){
+            return false
+        }
+        return true
+    })
+    return result
 }
 
 function alertError(e){

@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', async()=>{
     const deleteBtn = document.getElementById('btn-delete')
-    deleteBtn.addEventListener('click', ()=>deleteSheet(deleteBtn))
+    deleteBtn.addEventListener('click', ()=>deleteSheet())
 
     const createBtn = document.getElementById('btn-create')
-    createBtn.addEventListener('click', ()=>createSheet(createBtn))
+    createBtn.addEventListener('click', ()=>createSheet())
 
     const saveBtn = document.getElementById('btn-save')
-    saveBtn.addEventListener('click', ()=>saveSettings(saveBtn))
+    saveBtn.addEventListener('click', ()=>saveSettings())
 
     const addMemBtn = document.getElementById('btn-add-member')
-    addMemBtn.addEventListener('click',()=>addMember(addMemBtn))
+    addMemBtn.addEventListener('click',()=>addMember())
 
     const table = document.getElementById('member-table')
     table.addEventListener('click',(e)=>{
@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async()=>{
     const loader = document.getElementById('loading-screen');
     loader.classList.add('loaded');
 })
+
 async function loadSettings() {
     try{
         const result = {
@@ -48,6 +49,7 @@ async function loadSettings() {
         const targetMtgElements = document.getElementsByClassName('target-mtg')
         for (const element of targetMtgElements){
             for (const target of result.targetSSList){
+                if(target === 'テンプレ'){continue}
                 const optionElement = document.createElement('option')
                 optionElement.textContent = target
                 optionElement.value = target
@@ -92,7 +94,7 @@ async function loadSettings() {
     }
 }
 
-async function saveSettings(saveBtn) {
+async function saveSettings() {
     try{
         disable()
         const action = "saveSettings"
@@ -143,7 +145,8 @@ async function saveSettings(saveBtn) {
         const result = await postGAS(dataObj)
 
         alert(`設定変更が完了しました。リロードします。`)
-        await load()
+        sessionStorage.setItem('isVisited','false')
+        location.reload()
     } catch(e){
         alertError(e)
     } finally{
@@ -168,17 +171,6 @@ function stepTimeCheck(startTime, endTime, stepTime){
     }
     return true
 }
-function memberRowsCheck(memberRows){
-    const memberRowsArray = Array.from(memberRows)
-    const result = memberRowsArray.every((memberRow) => {
-        const nameInput = memberRow.querySelector('.input-name')
-        if (!memberRow || !nameInput.value.trim()){
-            return false
-        }
-        return true
-    })
-    return result
-}
 
 function deleteMember(deleteMemBtn) {
     disable()
@@ -189,7 +181,7 @@ function deleteMember(deleteMemBtn) {
     enable()
 }
 
-function addMember(addMemBtn){
+function addMember(){
     disable()
 
     const tbody = document.getElementById('member-table-body')
@@ -205,28 +197,38 @@ function addMember(addMemBtn){
     enable()
 }
 
-async function deleteSheet(deleteBtn){
+async function deleteSheet(){
     try{
         disable()
 
         const action = "delete"
         const target = document.getElementById('target-delete').value
+        const targetMtg = JSON.parse(sessionStorage.getItem('targetMtg'))
 
         if(!target){
             alert('削除対象が選択されていません。')
             return;
-        } else if (target === 'テンプレ'){
-            alert('テンプレートはUI経由では削除できません。')
-            return;
+        }
+
+        const targetSSList = JSON.parse(sessionStorage.getItem('targetSSList'))
+        if (targetSSList.length <= 1){
+            alert('最低一つの日調を残す必要があります。必要に応じてスプレッドシートの新規作成を行ってから削除してください。')
+            return
         }
         const confirmResult = confirm(`本当に${target}を削除しますか？`)
         if (!confirmResult) return;
     
-        const dataObj = {action:action, target:target}
+        const targetDelete = targetMtg === target ? true : false
+        const dataObj = {action:action, target:target, targetDelete:targetDelete}
         const result = await postGAS(dataObj)
+        if(targetDelete){
+            alert('スプレッドシートの削除が完了しました。リロード後、表示対象を選択してください。')
+        } else {
+            alert('スプレッドシートの削除が完了しました。')
+        }
 
-        alert('スプレッドシートの削除が完了しました。リロードします。')
-        await load()
+        sessionStorage.setItem('isVisited','false')
+        location.reload()
     } catch(e){
         alertError(e)
     } finally{
@@ -234,7 +236,7 @@ async function deleteSheet(deleteBtn){
     }
 }
 
-async function createSheet(createBtn){
+async function createSheet(){
     try{
         disable()
 
@@ -246,14 +248,22 @@ async function createSheet(createBtn){
             alert('作成するシートに関する情報が不足しています。')
             return;
         }
-        const confirmResult = confirm(`${month}月${str}半の会議日調を作成しますか？`)
+        const name = `${month}月${str}半会議日程調整`
+        const targetSSList = JSON.parse(sessionStorage.getItem('targetSSList'))
+        if (targetSSList.includes(name)){
+            alert(`${name}は既に作成されています。`)
+            return;
+        }
+
+        const confirmResult = confirm(`${name}を作成しますか？`)
         if (!confirmResult) return;
     
         const dataObj = {action:action, month:month, str:str}
         const result = await postGAS(dataObj)
 
-        alert(`${month}月${str}半の会議日調の作成が完了しました。リロードします。\nSlack文面：\n${result.SlackMsg}`)
-        await load()
+        prompt(`${name}の作成が完了しました。リロードします。\nSlack文面：`,result.SlackMsg)
+        sessionStorage.setItem('isVisited','false')
+        location.reload()
     } catch(e){
         alertError(e)
     } finally{

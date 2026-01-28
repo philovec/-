@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+/* =========================================
+   settings.css - 設定画面用スタイル
+   ========================================= */
+
+/* コンテナ幅の制限（読みやすくする） */
+body {
+    margin: 0 auto;
+    padding-bottom: 50px; /* 下部に余白 */
+}
+
+.main-container {
+    max-width: 900px;  /* ここで幅を制限 */
+    margin: 0 auto;    /* 中央揃え */
+    padding: 20px;     /* スマホで端がくっつかないように余白 */
+    padding-bottom: 50px;
+}
+
+/* --- フィールドセット（グループ分け） --- */
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    width: 95%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+legend {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #555;
+    padding: 0 10px;
+}
+
+/* --- フォームレイアウト --- */
+
+/* 新規作成・削除の行 */
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 要素間の隙間 */
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+.control-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* 設定項目の行 (ラベル + 入力欄) */
+.form-group {
+    display: flex;
+    justify-content: space-between; /* ラベル左、入力右 */
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #444;
+}
+
+/* 入力フィールド共通 */
+input[type="number"],
+input[type="text"],
+select,
+.form-control {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* 幅の調整 */
+.form-group input,
+.form-group select {
+    width: 200px; /* 右側の入力欄の幅 */
+}
+
+input.short {
+    width: 80px;
+}
+
+/* ボタン色定義 */
+.btn-primary, #btn-create, #btn-save {
+    background-color: #007bff; /* 青 */
+    color: white;
+}
+
+.btn-secondary, #btn-add-member {
+    background-color: #28a745; /* 緑（追加用） */
+    color: white;
+    margin-top: 10px;
+}
+
+/* 保存ボタンの強調 */
+.save-area {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+.btn-large {
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* --- テーブル --- */
+table#member-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+/* テーブル内の入力欄をセルいっぱいに広げる */
+td input, td select {
+    width: 100%;
+    border: 1px solid #eee; /* 薄い枠線 */
+    padding: 6px;
+}
+td input:focus, td select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 削除ボタン(小) */
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+/* 注釈テキスト */
+.note, p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0 15px;
+}
+
+/* --- レスポンシブ対応 (スマホ) --- */
+@media (max-width: 600px) {
+    .control-row {
+        flex-wrap: wrap;
+    }
+    
+    .form-group {
+        flex-direction: column; /* 縦並びにする */
+        align-items: flex-start;
+    }
+    
+    .form-group input,
+    .form-group select {
+        width: 100%; /* 幅いっぱい */
+        margin-top: 5px;
+    }
+
+    /* テーブルを横スクロールさせる（崩れ防止） */
+    fieldset {
+        padding: 10px;
+    }
+    #member-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

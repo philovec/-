@@ -15,41 +15,56 @@
 
         <header>
             <a id ="back-to-menu" href="../html/menu.html">メニューに戻る</a>
+            <button id="data-renew">データ更新</button>
         </header>
         
 
         <h1>会議日調</h1>
         <h2>集計モード</h2>
-        <button id="btn-recalculate">集計</button>
-
-        <details>
-            <summary>個別回答</summary>
-            <select id="name-search"></select>
-            <button id ="btn-name-search">検索</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>日付</th>
-                        <th>結果</th>
-                    </tr>
-                </thead>
-                <tbody id="each-table-body"></tbody>
-            </table>
-        </details>
-
-        <details>
-            <summary>gkc</summary>
-            <table>
-                <thead>
-                    <tr>
-                        <th>日付</th>
-                        <th>結果</th>
-                    </tr>
-                </thead>
-                <tbody id="gkc-table-body"></tbody>
-            </table>
+        <main>
             <details>
-                <summary>数値集計</summary>
+                <summary>集計オプション</summary>
+                <table id="member-table" class="common-table">
+                    <thead>
+                        <tr>
+                            <th>選出枠</th>                        
+                            <th>名前</th>
+                            <th>必須</th>
+                            <th>削除</th>
+                        </tr>
+                    </thead>
+                    <tbody id="member-table-body"></tbody>
+                </table>
+                <button id="btn-member-add" type="button">+ 追加</button>
+
+                <div class="quorum-gkc">
+                    <label for="quorum-gkc-input">gkc定足数</label>
+                    <input id="quorum-gkc-input" type="number">
+                </div>
+
+                <div class="mtgtime-gkc">
+                    <label for="mtgtime-gkc-input">gkc会議時間</label>
+                    <input id="mtgtime-gkc-input" type="number">
+                </div>
+
+                <div class="quorum-gkuc">
+                    <label for="quorum-gkuc-input">gkuc定足数</label>
+                    <input id="quorum-gkuc-input" type="number">
+                </div>
+
+                <div class="mtgtime-gkuc">
+                    <label for="mtgtime-gkuc-input">gkuc会議時間</label>
+                    <input id="mtgtime-gkuc-input" type="number">
+                </div>
+
+            </details>
+            <button id="btn-recalculate">集計</button>
+
+            <details>
+                <summary>個別回答</summary>
+                <select id="name-search"></select>
+                <button id ="btn-name-search">検索</button>
+                <p id="response-info"></p>
                 <table>
                     <thead>
                         <tr>
@@ -57,24 +72,12 @@
                             <th>結果</th>
                         </tr>
                     </thead>
-                    <tbody id="gkc-number-table-body"></tbody>
+                    <tbody id="each-table-body"></tbody>
                 </table>
             </details>
-        </details>
 
-        <details>
-            <summary>gkuc</summary>
-            <table>
-                <thead>
-                    <tr>
-                        <th>日付</th>
-                        <th>結果</th>
-                    </tr>
-                </thead>
-                <tbody id="gkuc-table-body"></tbody>
-            </table>
             <details>
-                <summary>数値集計</summary>
+                <summary>gkc</summary>
                 <table>
                     <thead>
                         <tr>
@@ -82,13 +85,135 @@
                             <th>結果</th>
                         </tr>
                     </thead>
-                    <tbody id="gkuc-number-table-body"></tbody>
+                    <tbody id="gkc-table-body"></tbody>
                 </table>
+                <details>
+                    <summary>数値集計</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>日付</th>
+                                <th>結果</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gkc-number-table-body"></tbody>
+                    </table>
+                </details>
             </details>
-        </details>
-        
-        
 
+            <details>
+                <summary>gkuc</summary>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>結果</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gkuc-table-body"></tbody>
+                </table>
+                <details>
+                    <summary>数値集計</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>日付</th>
+                                <th>結果</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gkuc-number-table-body"></tbody>
+                    </table>
+                </details>
+            </details>
+
+            <div class="shuae-post">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>会議区分</th>
+                            <th>会議日</th>
+                            <th>開始時間</th>
+                            <th>削除</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="common-table">
+                        <tr class="mtg-settings">
+                            <td class="kind-mtg">
+                                <select class="kind-select">
+                                    <option>gkc(zoom)</option>
+                                    <option selected>gkuc(zoom)</option>
+                                    <option>gkc(対面)</option>
+                                    <option>gkuc(対面)</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="date-mtg"></td>
+                            <td><input type="time" class="time-mtg" value="20:00"></td>
+                            <td class="btn-delete-mtg"><button class="btn-delete">削除</button></td>
+                        </tr>
+                        <tr class="mtg-settings">
+                            <td class="kind-mtg">
+                                <select class="kind-select">
+                                    <option>gkc(zoom)</option>
+                                    <option selected>gkuc(zoom)</option>
+                                    <option>gkc(対面)</option>
+                                    <option>gkuc(対面)</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="date-mtg"></td>
+                            <td><input type="time" class="time-mtg" value="20:00"></td>
+                            <td class="btn-delete-mtg"><button class="btn-delete">削除</button></td>
+                        </tr>
+                        <tr class="mtg-settings">
+                            <td class="kind-mtg">
+                                <select class="kind-select">
+                                    <option>gkc(zoom)</option>
+                                    <option selected>gkuc(zoom)</option>
+                                    <option>gkc(対面)</option>
+                                    <option>gkuc(対面)</option>
+                                </select>
+                            </td>
+                            <td><input type="date" class="date-mtg"></td>
+                            <td><input type="time" class="time-mtg" value="20:00"></td>
+                            <td class="btn-delete-mtg"><button class="btn-delete">削除</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <button id="btn-add">+ 追加</button>
+                </div>
+                <div>
+                    <button id="btn-post">投稿</button>
+                    <span>投稿状況：</span>
+                    <span id="post-status"></span>
+                </div>
+            </div>
+
+        </main>
+
+        <template id="member-row-template">
+            <tr class ='member-row'>
+                <td>
+                    <select class="select-origin">
+                        <option value="自治会">自治会</option>
+                        <option value="学友会">学友会</option>
+                        <option value="生協">生協</option>
+                        <option value="なし" selected>なし</option>                           
+                    </select>
+                </td>
+                <td><input type="text" class="input-name"></td>
+                <td>
+                    <select class="select-need">
+                        <option value="gkc">gkc</option>
+                        <option value="gkuc">gkuc</option>
+                        <option value="両方">両方</option>
+                        <option value="なし" selected>なし</option>
+                    </select>
+                </td>
+                <td><button class="btn-delete-member btn btn-danger btn-sm" type="button">削除</button></td>
+            </tr>
+        </template>
+        
         <template id="timeline-template">
             <tr>
                 <td class="date"></td>
@@ -98,6 +223,22 @@
                         <div class="timeline-comment"></div>
                     </div>
                 </td>
+            </tr>
+        </template>
+
+        <template id="table-template">
+            <tr class="mtg-settings">
+                <td class="kind-mtg">
+                    <select class="kind-select" value="gkuc(zoom)">
+                        <option>gkc(zoom)</option>
+                        <option selected>gkuc(zoom)</option>
+                        <option>gkc(対面)</option>
+                        <option>gkuc(対面)</option>
+                    </select>
+                </td>
+                <td><input type="date" class="date-mtg"></td>
+                <td><input type="time" class="time-mtg" value="20:00"></td>
+                <td class="btn-delete-mtg"><button class="btn-delete">削除</button></td>
             </tr>
         </template>
 

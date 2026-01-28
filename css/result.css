@@ -1,0 +1,394 @@
+@charset "UTF-8";
+
+/* =========================================
+   result.css - 集計・結果画面用スタイル
+   ========================================= */
+
+/* --- 全体レイアウト --- */
+body {
+    background-color: #f9f9f9;
+    width: 100%;
+    margin: 0;
+}
+
+/* メインコンテンツの中央寄せ */
+main {
+    max-width: 1000px; /* 横幅が広い表があるので少し広めに */
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px; /* 下部の余白 */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* --- 集計ボタン --- */
+#btn-recalculate {
+    display: block;
+    margin: 30px auto 50px; /* 中央配置 */
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #ff9800; /* 目立つオレンジ色 */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+#btn-recalculate:hover {
+    background-color: #f57c00;
+    transform: translateY(-2px);
+}
+
+#btn-recalculate:active {
+    transform: translateY(0);
+}
+
+/* --- アコーディオン (Details / Summary) --- */
+details {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden; /* 角丸を維持 */
+    background-color: #fff;
+}
+
+summary {
+    background-color: #f1f1f1;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none; /* デフォルトの三角を消す(一部ブラウザ用) */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* カスタム矢印を追加 */
+summary::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+details[open] summary {
+    background-color: #e9ecef;
+    border-bottom: 1px solid #ddd;
+}
+
+details[open] summary::after {
+    content: '-';
+}
+
+/* detailsの中身のパディング */
+details > *:not(summary) {
+    padding: 15px;
+}
+
+/* ネストされたdetails (数値集計など) */
+details details {
+    margin: 10px 0;
+    border: 1px dashed #ccc;
+}
+details details summary {
+    background-color: #fafafa;
+    font-size: 0.95rem;
+}
+
+/* --- 検索エリア (個別回答) --- */
+#name-search {
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#btn-name-search {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --- 結果テーブル共通 --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f8f9fa;
+    white-space: nowrap;
+    width: 100px; /* 日付列の幅 */
+    text-align: center;
+}
+
+td.date {
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    background-color: #fff;
+}
+
+/* --- タイムライン可視化部分 (Timeline) --- */
+.timeline-cell {
+    padding: 0; /* 余白なしにしてバーを配置 */
+    background-color: #fff;
+}
+
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: auto; /* 幅が足りない場合は横スクロール */
+}
+
+/* 時間軸 (Ruler) と 結果バー (Bars) の共通設定 */
+.time-ruler, .timeline-bars {
+    display: flex;
+    width: 100%;
+    min-width: 300px; /* 最小幅を確保 */
+}
+
+/* 時間軸のメモリ */
+.time-ruler {
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.75rem;
+    color: #666;
+    height: 20px;
+    align-items: center;
+}
+
+/* 結果バー */
+.timeline-bars {
+    height: 30px; /* バーの高さ */
+    align-items: center;
+}
+
+/* 各セル (div) */
+.time-ruler div, .timeline-bars div {
+    flex: 1; /* 等間隔に引き伸ばす */
+    text-align: center;
+    border-right: 1px dashed #eee; /* 薄い区切り線 */
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* ◯などの文字色 */
+.timeline-bars div {
+    font-weight: bold;
+    color: #28a745; /* 緑色 */
+}
+
+/* コメント */
+.timeline-comment {
+    font-size: 0.85rem;
+    color: #666;
+    padding: 4px 8px;
+    background-color: #fffbe6; /* 薄い黄色 */
+    border-top: 1px dotted #ddd;
+}
+
+/* --- 会議投稿エリア (Shuae Post) --- */
+.shuae-post {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.shuae-post h3 {
+    margin-bottom: 15px;
+}
+
+/* 会議設定テーブル */
+#table th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+/* 入力要素のスタイル */
+.mtg-settings input, 
+.mtg-settings select {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.kind-select {
+    min-width: 120px;
+}
+
+/* 削除ボタン */
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* ボタンエリア */
+.shuae-post > div,#btn-member-add{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#btn-add, #btn-member-add {
+    background-color: #28a745; /* 緑 */
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#btn-post {
+    background-color: #007bff; /* 青 */
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#btn-post:hover {
+    background-color: #0056b3;
+}
+
+#post-status {
+    font-weight: bold;
+    color: #dc3545; /* ステータスを目立たせる */
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 600px) {
+    main {
+        padding: 10px;
+        width: 100%;
+        box-shadow: none;
+    }
+
+    /* テーブルを横スクロールさせる */
+    details > table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* 検索エリアを縦並びに */
+    #name-search {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #btn-name-search {
+        width: 100%;
+    }
+}
+
+/* =========================================
+   集計オプション入力エリア (result.cssに追加)
+   ========================================= */
+
+/* --- 4つの入力エリア共通設定 --- */
+.quorum-gkc, .mtgtime-gkc,
+.quorum-gkuc, .mtgtime-gkuc {
+    display: flex;
+    justify-content: space-between; /* ラベルと入力を左右に配置 */
+    align-items: center;            /* 垂直方向中央揃え */
+    max-width: 400px;               /* 横幅が広がりすぎないように制限 */
+    margin: 0 auto;                 /* 中央寄せ */
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee; /* 薄い区切り線 */
+}
+
+/* --- グループごとの余白調整 --- */
+
+/* 「+ 追加」ボタンとの距離を空ける（最初の要素） */
+.quorum-gkc {
+    margin-top: 20px;
+    border-top: 2px solid #f0f0f0; /* 区切りの線を少し太めに */
+    padding-top: 20px;
+}
+
+/* gkcとgkucのグループ間を少し空ける */
+.quorum-gkuc {
+    margin-top: 20px;
+}
+
+/* --- ラベルの装飾 --- */
+.quorum-gkc label, .mtgtime-gkc label,
+.quorum-gkuc label, .mtgtime-gkuc label {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* --- 入力ボックス(input type="number")の装飾 --- */
+.quorum-gkc input, .mtgtime-gkc input,
+.quorum-gkuc input, .mtgtime-gkuc input {
+    width: 100px;        /* 幅を統一 */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: right;   /* 数字なので右寄せが見やすい */
+    background-color: #fff;
+}
+
+/* 入力欄にフォーカスが当たった時 */
+.quorum-gkc input:focus, .mtgtime-gkc input:focus,
+.quorum-gkuc input:focus, .mtgtime-gkuc input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+}
+
+/* --- レスポンシブ対応（画面が狭いとき） --- */
+@media (max-width: 480px) {
+    .quorum-gkc, .mtgtime-gkc,
+    .quorum-gkuc, .mtgtime-gkuc {
+        max-width: 100%; /* スマホなら幅いっぱい */
+    }
+}
